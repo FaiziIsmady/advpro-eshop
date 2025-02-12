@@ -25,11 +25,15 @@ public class ProductRepository {
     }
 
     public Product findById(String id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Product ID is null");
+        }
+
         for (Product product : productData) {
             if (product.getProductId().equals(id)) {
                 return product;
             }
         }
-        return null; // If not found return null for now
+        throw new NoSuchElementException("No product found with ID: " + id);
     }
 }
