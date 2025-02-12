@@ -22,6 +22,9 @@
         <tr th:each="product: ${products}">
             <td th:text="${product.productName}"></td>
             <td th:text="${product.productQuantity}"></td>
+            <td>
+                <a th:href="@{/product/delete/{productId}(productId=${product.productId})}" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
         </tr>
         </tbody>
     </table>
