@@ -21,7 +21,7 @@ public class ProductRepository {
         return productData.iterator();
     }
 
-    public void delete(String id) {
+    public void deleteById(String id) {
         productData.removeIf(p -> p.getProductId().equals(id));
     }
 
@@ -36,5 +36,14 @@ public class ProductRepository {
             }
         }
         throw new NoSuchElementException("No product found with ID: " + id);
+    }
+
+    public Product update(String productId, String newName, int newQuantity) {
+        Product product = findById(productId);
+        if (product != null) {
+            product.setProductName(newName);
+            product.setProductQuantity(newQuantity);
+        }
+        return product;
     }
 }
