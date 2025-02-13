@@ -49,6 +49,12 @@ public class ProductRepository {
         if (product != null) {
             product.setProductName(newName);
             product.setProductQuantity(newQuantity);
+            if (newQuantity < 0) {
+                product.setProductQuantity(0);
+            }
+            if ("".equals(newName)) {
+                product.setProductName("Product name input is empty");
+            }
         }
         return product;
     }
