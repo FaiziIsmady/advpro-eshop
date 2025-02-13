@@ -13,6 +13,12 @@ public class ProductRepository {
     private List<Product> productData = new ArrayList<>();
 
     public Product create(Product product) {
+        if (product.getProductQuantity() < 0) {
+            product.setProductQuantity(0);
+        }
+        if ("".equals(product.getProductName())) {
+            product.setProductName("Product name input is empty");
+        }
         productData.add(product);
         return product;
     }
@@ -43,6 +49,12 @@ public class ProductRepository {
         if (product != null) {
             product.setProductName(newName);
             product.setProductQuantity(newQuantity);
+            if (newQuantity < 0) {
+                product.setProductQuantity(0);
+            }
+            if ("".equals(newName)) {
+                product.setProductName("Product name input is empty");
+            }
         }
         return product;
     }
