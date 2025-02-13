@@ -62,4 +62,41 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+
+    @Test
+    void testUpdate() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        // Edit the product with new values
+        Product updatedProduct = productRepository.update(
+                "eb558e9f-1c39-460e-8860-71af6af63bd6",
+                "Sampo Cap Bambang Updated",
+                200
+        );
+
+        // Check if values are updated
+        assertNotNull(updatedProduct);
+        assertEquals("Sampo Cap Bambang Updated", updatedProduct.getProductName());
+        assertEquals(200, updatedProduct.getProductQuantity());
+    }
+
+    @Test
+    void testDeleteById() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+        productRepository.create(product);
+
+        // Delete the product by ID
+        productRepository.deleteById("eb558e9f-1c39-460e-8860-71af6af63bd6");
+
+        // Ensure the repository is now empty
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertFalse(productIterator.hasNext(), "Product list should be empty after deletion");
+    }
 }
