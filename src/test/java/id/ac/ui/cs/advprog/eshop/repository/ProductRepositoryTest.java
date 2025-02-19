@@ -17,7 +17,9 @@ class ProductRepositoryTest {
     ProductRepository productRepository;
 
     @BeforeEach
-    void setUp() {}
+    void setUp() {
+        // Setting up test
+    }
 
     @Test
     void testCreateAndFind() {
