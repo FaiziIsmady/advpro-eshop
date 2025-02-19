@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.NoSuchElementException;
 
 @ExtendWith(MockitoExtension.class)
 class ProductRepositoryTest {
@@ -153,5 +154,53 @@ class ProductRepositoryTest {
         assertNotNull(updatedProduct);
         assertEquals("Product name input is empty", updatedProduct.getProductName());
         assertEquals(0, updatedProduct.getProductQuantity());
+    }
+
+    @Test
+    void testFindByIdWithNullId() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            productRepository.findById(null);
+        });
+
+        assertEquals("Product ID is null", exception.getMessage());
+    }
+
+    @Test
+    void testFindByIdWithNonExistingId() {
+        Exception exception = assertThrows(NoSuchElementException.class, () -> {
+            productRepository.findById("non-existing-id");
+        });
+
+        assertEquals("No product found with ID: non-existing-id", exception.getMessage());
+    }
+
+    @Test
+    void testFindByIdWithExistingId() {
+        Product product1 = new Product();
+        product1.setProductId("id1");
+        product1.setProductName("Product 1");
+        product1.setProductQuantity(10);
+        productRepository.create(product1);
+
+        Product product2 = new Product();
+        product2.setProductId("id2");
+        product2.setProductName("Product 2");
+        product2.setProductQuantity(20);
+        productRepository.create(product2);
+
+        // Searching for the second product to ensure full loop execution
+        Product foundProduct = productRepository.findById("id2");
+
+        assertNotNull(foundProduct);
+        assertEquals("id2", foundProduct.getProductId());
+    }
+
+    @Test
+    void testUpdateNonExistentProduct() {
+        Exception exception = assertThrows(NoSuchElementException.class, () -> {
+            productRepository.update("non-existent-id", "Invalid Update", 50);
+        });
+
+        assertEquals("No product found with ID: non-existent-id", exception.getMessage());
     }
 }
