@@ -219,3 +219,111 @@ class ProductListPage {
 1. Single (modular) responsibility, each class focus on testing specific function
 2. Readability, test become easier to understand
 3. Reusability, as each class become more modular it is easier to use them for multiple purposes
+
+# Module 2: CI/CD and DevOps
+## Reflection
+### Deployment Link:
+- https://domestic-noelani-university-of-indonesia-fe0c0846.koyeb.app/
+
+### Code Coverage:
+![Image](https://github.com/user-attachments/assets/59728d50-3326-493a-aabc-74b1e9c56563)
+
+1. List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
+
+There are several code quality issues which I found and fixed during the exercise, they include:
+1. Unused import methods
+There are some imports which I didn't realize have no use in the code file.
+
+Example:
+```java
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.any;
+```
+
+Fixed to:
+```java
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+```
+
+2. Empty Method Head Body
+As the name suggest, it means there are some methods were defined but didn't perform any operations.
+
+Example in `ProductRepositoryTest.java`:
+```java
+@Test
+void contextLoads() {}
+```
+
+Fixed to:
+```java
+@Test
+void contextLoads() {
+    // Setting up for loading context
+}
+```
+
+3. Unused / unnecessary `public` modifier
+This problem arise when I added `public` identifier to an interface, since an interface is public final by default, the problem arise.
+
+Example:
+```java
+public interface ProductService {
+    public Product create(Product product);
+    public List<Product> findAll();
+    public void deleteById(String productId);
+    Product findById(String productId);
+    Product update(String productId, String newName, int newQuantity);
+}
+```
+
+Fixed to:
+```java
+public interface ProductService {
+    Product create(Product product);
+    List<Product> findAll();
+    void deleteById(String productId);
+    Product findById(String productId);
+    Product update(String productId, String newName, int newQuantity);
+}
+```
+
+4. Naming of variables which doesnt follow Java's naming convention (camelCase)
+Some function names in my files uses inconsistent naming convention (snake case)
+Example in `HomePageFunctionalTest.java`:
+```java
+@Test
+void pageTitle_isCorrect(ChromeDriver driver) throws Exception {
+
+// Exercise
+driver.get(baseUrl);
+String pageTitle = driver.getTitle();
+```
+
+Fixed to:
+```java
+@Test
+void pageTitleCorrect(ChromeDriver driver) throws Exception {
+    // Exercise
+    driver.get(baseUrl);
+    String pageTitle = driver.getTitle();
+
+    // Verify
+    assertEquals("ADV Shop", pageTitle);
+}
+```
+
+2. Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
+
+In my opinion, the current implementation of my advanced programming eshop project has indeed met the definition of CI/CD. The reasons are:
+- I use Github Actions to run my workflows like pmd and scorecard code scanner inside `.github/workflows` and by doing that it 
+ensures that every push and pull request triggers automated checks for code quality and security. The pipeline includes automated testing and security scans, which help identify issues early in the development process, fulfilling the Continuous Integration (CI) principle.
+The workflow enforces best practices such as branch protection, dependency updates, and security policy validation, which contribute to a more reliable and maintainable codebase.
+
+
+- I use Koyeb for deployment, which means that every time I push changes to my repository, the application is automatically deployed. 
+This ensures that the latest version is always live, fulfilling the requirements of Continuous Deployment (CD).
+
+By integrating these, I think my projects does implement CI/CD.
