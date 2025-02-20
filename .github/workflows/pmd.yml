@@ -11,7 +11,7 @@ permissions:
   actions: write
 
 jobs:
-  code_quality:
+  pmd:
     name: Run PMD Static Analysis
     runs-on: ubuntu-latest
 
