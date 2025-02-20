@@ -14,7 +14,7 @@ jobs:
 
       - name: Koyeb Deployment
         run: |
-          curl -X POST "https://app.koyeb.com/v1/apps/Token Eshop AdvPro/deployments" \
+          curl -X POST "https://app.koyeb.com/v1/apps/token_eshop_advpro/deployments" \
           -H "Authorization: Bearer ${{ secrets.KOYEB_API_KEY }}" \
           -H "Content-Type: application/json" \
           -d '{}'
