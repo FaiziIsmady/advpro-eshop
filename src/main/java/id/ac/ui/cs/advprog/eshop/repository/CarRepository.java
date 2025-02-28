@@ -1,28 +1,34 @@
 package id.ac.ui.cs.advprog.eshop.repository;
 
 import id.ac.ui.cs.advprog.eshop.model.Car;
+import id.ac.ui.cs.advprog.eshop.utils.CarIdGenerator;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public class CarRepository {
-    static int id = 0;
     private List<Car> carData = new ArrayList<>();
 
     public Car create(Car car) {
         if (car.getCarId() == null) {
-            UUID uuid = UUID.randomUUID();
-            car.setCarId(uuid.toString());
+            car.setCarId(CarIdGenerator.generateId()); // Made CarIdGenerator in utils (SRP)
+        }
+        if (car.getCarQuantity() < 0) {
+            car.setCarQuantity(0);
+        }
+        if ("".equals(car.getCarName())) {
+            car.setCarName("Car name input is empty");
+        }
+        if ("".equals(car.getCarColor())) {
+            car.setCarColor("Car color input is empty");
         }
         carData.add(car);
         return car;
     }
 
-    public Iterator<Car> findAll() {
-        return carData.iterator();
+    public List<Car> findAll() {
+        return new ArrayList<>(carData); // Return list instead of iterator (SRP)
     }
 
     public Car findById(String id) {
@@ -42,6 +48,16 @@ public class CarRepository {
                 car.setCarName(updatedCar.getCarName());
                 car.setCarColor(updatedCar.getCarColor());
                 car.setCarQuantity(updatedCar.getCarQuantity());
+
+                if (updatedCar.getCarQuantity() < 0) {
+                    car.setCarQuantity(0);
+                }
+                if ("".equals(updatedCar.getCarName())) {
+                    car.setCarName("Car name input is empty");
+                }
+                if ("".equals(updatedCar.getCarColor())) {
+                    car.setCarColor("Car color input is empty");
+                }
                 return car;
             }
         }

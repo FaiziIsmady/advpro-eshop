@@ -327,3 +327,92 @@ The workflow enforces best practices such as branch protection, dependency updat
 This ensures that the latest version is always live, fulfilling the requirements of Continuous Deployment (CD).
 
 By integrating these, I think my projects does implement CI/CD.
+
+# Module 3: OOP Principles
+## Reflection
+
+1) Explain what principles you apply to your project!
+
+1.1. Single Responsibility Principle (SRP) <br>
+The Single Responsibility Principle states that a class should have only one reason to change, meaning it should encapsulate only one aspect of the software's functionality. Here are my files and their purpose.
+- - CarController: Handles HTTP requests and responses.
+- - CarServiceImpl: Contains business logic related to cars.
+- - CarRepository: Manages data storage and retrieval. 
+- - CarIdGenerator: Responsible for generating unique car IDs.
+- - Car: Represents the car entity as a data model.
+Each class in the project has a clear, singular responsibility, following SRP correctly.
+
+
+1.2. Open-Closed Principle (OCP)<br>
+The Open-Closed Principle states that software entities (classes, modules, functions, etc.) should be open for extension but closed for modification.
+New behaviors can be added without modifying existing classes.
+
+For example, if we need to introduce a new way of filtering cars (e.g., by color or brand), we can extend CarService without modifying CarServiceImpl.
+
+The CarRepository class is designed in a way that we can add additional query methods with no need to change the existing ones.
+
+Thus, I think my code follows OCP correctly by allowing future extensions without modifying core logic.
+
+1.3. Liskov Substitution Principle (LSP)<br>
+The Liskov Substitution Principle states that objects of a subclass should be able to replace objects of the superclass without breaking functionality.
+
+CarServiceImpl correctly implements CarService, meaning any reference to CarService (either read or write) can be replaced by an instance of CarServiceImpl.
+
+1.4. Interface Segregation Principle (ISP)<br>
+The Interface Segregation Principle states that large interfaces should be split into smaller, more specific ones so that clients only need to depend on the methods relevant to them. 
+Since CarService and ProductService is separated, I think it my code already implements ISP. But I also split CarService into CarReadService and CarWriteService.
+
+1.5. Dependency Inversion Principle (DIP)<br>
+The Dependency Inversion Principle states that high-level modules should not depend on low-level modules. Both should depend on abstractions. I think my project applies this, here are the reasons:
+- CarController depends on the abstraction CarReadService and CarWriteService, not directly on CarServiceImpl.
+- CarServiceImpl depends on the abstraction CarRepository, not directly on the data source.
+- Dependencies are injected using Spring’s @Autowired, ensuring abstraction reliance.
+
+2) Explain the advantages of applying SOLID principles to your project with examples.
+
+- Better Testability<br>
+Since components are loosely coupled,  tests like test CarServiceImpl independently of CarRepository by using mock objects (DIP).
+
+- Scalability<br>
+If we introduce a new vehicle type or anything in that matter, we can create VariableService without modifying CarService (OCP).
+
+3) Explain the disadvantages of not applying SOLID principles to your project with examples.
+- If CarController depended directly on CarServiceImpl, switching implementations would be hard, making testing difficult. Hence I made CarController depended on CarService instead.
+```java
+@Controller
+@RequestMapping("/car")
+class CarController {
+    private final CarService carservice;
+
+    @Autowired
+    public CarController(CarService carservice) {
+        this.carservice = carservice;
+    }
+```
+
+- If CarService and ProductService had all methods together (violating ISP), future updates would force changes in all implementing classes, even if they don’t need certain methods.
+I also split CarService into two (read and write) to adhere to ISP.
+
+```java
+package id.ac.ui.cs.advprog.eshop.service;
+
+import id.ac.ui.cs.advprog.eshop.model.Car;
+
+public interface CarWriteService {
+    Car create(Car car);
+    void update(String carId, Car car);
+    void deleteCarById(String carId);
+}
+```
+
+```java
+package id.ac.ui.cs.advprog.eshop.service;
+
+import id.ac.ui.cs.advprog.eshop.model.Car;
+import java.util.List;
+
+public interface CarReadService {
+    List<Car> findAll();
+    Car findById(String carId);
+}
+```
