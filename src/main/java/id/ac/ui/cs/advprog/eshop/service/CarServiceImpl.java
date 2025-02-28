@@ -16,17 +16,13 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car create(Car car) {
-        // TODO Auto-generated method stub
         carRepository.create(car);
         return car;
     }
 
     @Override
     public List<Car> findAll() {
-        Iterator<Car> carIterator = carRepository.findAll();
-        List<Car> allCar = new ArrayList<>();
-        carIterator.forEachRemaining(allCar::add);
-        return allCar;
+        return carRepository.findAll();
     }
 
     @Override
@@ -37,13 +33,11 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void update(String carId, Car car) {
-        // TODO Auto-generated method stub
         carRepository.update(carId, car);
     }
 
     @Override
     public void deleteCarById(String carId) {
-        // TODO Auto-generated method stub
         carRepository.delete(carId);
     }
 }
