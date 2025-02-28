@@ -2,21 +2,14 @@ package id.ac.ui.cs.advprog.eshop.controller;
 
 import id.ac.ui.cs.advprog.eshop.model.Car;
 import id.ac.ui.cs.advprog.eshop.service.CarService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/car")
 class CarController {
-
-    private static final Logger logger = LoggerFactory.getLogger(CarController.class);
-
     private final CarService carservice;
 
     @Autowired
@@ -50,7 +43,6 @@ class CarController {
 
     @PostMapping("/editCar")
     public String editCarPost(@ModelAttribute Car car) {
-        logger.info("Editing car with ID: {}", car.getCarId());
         carservice.update(car.getCarId(), car);
         return "redirect:listCar";
     }
