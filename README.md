@@ -356,15 +356,15 @@ Thus, I think my code follows OCP correctly by allowing future extensions withou
 1.3. Liskov Substitution Principle (LSP)<br>
 The Liskov Substitution Principle states that objects of a subclass should be able to replace objects of the superclass without breaking functionality.
 
-CarServiceImpl correctly implements CarService, meaning any reference to CarService can be replaced by an instance of CarServiceImpl.
+CarServiceImpl correctly implements CarService, meaning any reference to CarService (either read or write) can be replaced by an instance of CarServiceImpl.
 
 1.4. Interface Segregation Principle (ISP)<br>
 The Interface Segregation Principle states that large interfaces should be split into smaller, more specific ones so that clients only need to depend on the methods relevant to them. 
-Since CarService and ProductService is separated, I think it my code already implements  ISP.
+Since CarService and ProductService is separated, I think it my code already implements ISP. But I also split CarService into CarReadService and CarWriteService.
 
 1.5. Dependency Inversion Principle (DIP)<br>
 The Dependency Inversion Principle states that high-level modules should not depend on low-level modules. Both should depend on abstractions. I think my project applies this, here are the reasons:
-- CarController depends on the abstraction CarService, not directly on CarServiceImpl.
+- CarController depends on the abstraction CarReadService and CarWriteService, not directly on CarServiceImpl.
 - CarServiceImpl depends on the abstraction CarRepository, not directly on the data source.
 - Dependencies are injected using Spring’s @Autowired, ensuring abstraction reliance.
 
@@ -391,3 +391,28 @@ class CarController {
 ```
 
 - If CarService and ProductService had all methods together (violating ISP), future updates would force changes in all implementing classes, even if they don’t need certain methods.
+I also split CarService into two (read and write) to adhere to ISP.
+
+```java
+package id.ac.ui.cs.advprog.eshop.service;
+
+import id.ac.ui.cs.advprog.eshop.model.Car;
+
+public interface CarWriteService {
+    Car create(Car car);
+    void update(String carId, Car car);
+    void deleteCarById(String carId);
+}
+```
+
+```java
+package id.ac.ui.cs.advprog.eshop.service;
+
+import id.ac.ui.cs.advprog.eshop.model.Car;
+import java.util.List;
+
+public interface CarReadService {
+    List<Car> findAll();
+    Car findById(String carId);
+}
+```
