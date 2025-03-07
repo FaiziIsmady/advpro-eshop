@@ -5,6 +5,8 @@ import lombok.Setter;
 
 import java.util.Map;
 
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
+
 @Getter
 public class Payment {
     private String id;
@@ -16,7 +18,7 @@ public class Payment {
     public Payment(String id, String method, Map<String, String> paymentData) {
         this.id = id;
         this.method = method;
-        this.status = "REJECTED"; // Default status
+        this.status = PaymentStatus.REJECTED.getValue(); // Default status
         setPaymentData(paymentData);
     }
 
