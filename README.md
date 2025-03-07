@@ -416,3 +416,40 @@ public interface CarReadService {
     Car findById(String carId);
 }
 ```
+
+# Module 4: TDD and Refactoring
+## Reflection
+
+1. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), 
+whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.<br>
+
+Reflecting on Percival’s principles, I found the Test-Driven Development (TDD) flow to be useful for the following reasons:
+
+- Improved Code Confidence
+Writing tests first ensured that the implementation met the expected behavior, reducing the risk of bugs.
+
+- Better Code Structure
+Since I focused on writing minimal code to pass each test, the final implementation was cleaner and more modular.
+
+- Edge Case Coverage
+The TDD process forced me to think about different edge cases (e.g., empty inputs, null values) before writing the implementation, making the code more robust.
+
+However, there were also some challenges:
+- Slower Initial Development: Writing tests before implementing the functionality felt slower compared to writing code directly.
+- Refactoring Needed More Planning: After getting tests to pass, I found areas for improvement but had to ensure refactoring didn’t break anything.
+
+2. Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule, chapter “Evaluating Your Testing Objectives”), 
+whether this TDD flow is useful enough for you or not. If not, explain things that you need to do next time you make more tests.<br>
+
+In my opinion, TDD is beneficial. But, eventhough the TDD flow was beneficial, I feel like I can improve the process by:
+- More Modular Test Cases
+Some test cases could be broken down further to isolate specific conditions (e.g., distinguishing between missing vs. empty fields).
+
+- Mocking Dependencies Where Needed
+If the class interacts with external dependencies (e.g., a database), using mocks could improve test efficiency.
+
+- Better Test Naming
+Using descriptive test names (e.g., testRejectPaymentWhenAddressIsEmpty) would make test failures easier to debug.
+
+- Using Parameterized Tests
+Instead of writing multiple similar test cases, using JUnit’s parameterized tests could make the test suite more maintainable.
